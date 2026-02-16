@@ -1,0 +1,13 @@
+{
+  "name": "snowden-ai",
+  "version": "1.0.0",
+  "description": "Claude.ai Chat Exporter Chrome Extension",
+  "type": "module",
+  "scripts": {
+    "build": "bun run build.js"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.2"
+  },
+  "devDependencies": {}
+}
