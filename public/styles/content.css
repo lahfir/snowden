@@ -23,6 +23,41 @@
   height: 16px;
 }
 
+.snowden-export-button[data-snowden-platform="chatgpt"] {
+  border-radius: 20px;
+  padding: 8px 16px;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.snowden-export-button[data-snowden-platform="chatgpt"]:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  .snowden-export-button[data-snowden-platform="chatgpt"] {
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #ececec;
+  }
+
+  .snowden-export-button[data-snowden-platform="chatgpt"]:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.snowden-export-button[data-snowden-platform="grok"] {
+  border-radius: 9999px;
+  padding: 8px 16px;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #e7e9ea;
+}
+
+.snowden-export-button[data-snowden-platform="grok"]:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
 .snowden-dropdown {
   position: fixed;
   background: white;
@@ -32,6 +67,39 @@
   padding: 4px;
   z-index: 10000;
   min-width: 180px;
+}
+
+.snowden-dropdown[data-snowden-platform="chatgpt"] {
+  border-radius: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .snowden-dropdown[data-snowden-platform="chatgpt"] {
+    background: #2f2f2f;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .snowden-dropdown[data-snowden-platform="chatgpt"] .snowden-dropdown-item {
+    color: #ececec;
+  }
+
+  .snowden-dropdown[data-snowden-platform="chatgpt"] .snowden-dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.snowden-dropdown[data-snowden-platform="grok"] {
+  background: #16181c;
+  border-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.snowden-dropdown[data-snowden-platform="grok"] .snowden-dropdown-item {
+  color: #e7e9ea;
+}
+
+.snowden-dropdown[data-snowden-platform="grok"] .snowden-dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .snowden-dropdown-item {

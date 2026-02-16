@@ -2,3 +2,9 @@ node_modules/
 dist/
 bun.lockb
 .DS_Store
+.claude/
+.agents/
+.cursor/blogs/
+.commitblog.json
+.commitblog/
+.env

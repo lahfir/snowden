@@ -2,46 +2,58 @@
 
 ## What Was Built
 
-A Chrome extension that adds one-click export functionality to Claude.ai conversations, supporting both Markdown and PDF formats.
+A Chrome extension that adds one-click export functionality to conversations on **Claude.ai**, **ChatGPT**, and **Grok**, supporting both Markdown and PDF formats.
 
 ## Implementation Completed
 
-### ✅ Core Features
-- API-based conversation fetching (not DOM scraping)
-- Cookie-based authentication (org ID extraction)
-- Message tree traversal for active branch detection
+### Core Features
+- Provider pattern for multi-platform support
+- API-based conversation fetching with DOM scraping fallbacks
+- Cookie-based authentication (credentials: 'include' on each origin)
+- Message tree traversal for active branch detection (Claude, ChatGPT)
 - Markdown export with proper User/Assistant formatting
 - PDF export with pagination and professional layout
 - Filename sanitization
 - Toast notifications for user feedback
 - File download mechanism
 
-### ✅ UI Components
-- Export button injection into chat header
+### Platform Providers
+- **Claude**: API-based with org ID cookie auth + tree traversal
+- **ChatGPT**: Backend API with mapping tree walk from current_node
+- **Grok**: REST API with DOM scraping fallback
+
+### UI Components
+- Export button injection into each platform's chat header
+- Per-platform button theming via `data-snowden-platform` attribute
 - Format selection dropdown (Markdown/PDF)
-- CSS styling for all components
+- CSS styling for all components with dark mode support
 - Toast notification system
 
-### ✅ Navigation Handling
+### Navigation Handling
 - SPA route change detection via MutationObserver
-- Service worker for webNavigation events
+- Service worker for webNavigation events (all 4 platforms)
 - Automatic button re-injection on navigation
 
-### ✅ Build System
+### Build System
 - Bun-based build script
 - IIFE bundling for content scripts
 - Public asset copying
 - Manifest V3 configuration
 
-### ✅ Documentation
+### Documentation
 - README.md - Installation and usage guide
-- ARCHITECTURE.md - Technical design and data flow
+- ARCHITECTURE.md - Technical design, provider interface, and data flow
 - TESTING.md - Comprehensive test checklist
-- .gitignore - Proper exclusions
+- INSTALL.md - Detailed installation instructions
 
-## File Count: 24 files created
+## File Count
 
-### Source Files (15)
+### Source Files
+- src/providers/index.js
+- src/providers/claude.js
+- src/providers/chatgpt.js
+- src/providers/grok.js
+- src/providers/header-finder.js
 - src/content/index.js
 - src/content/ui/inject.js
 - src/content/ui/dropdown.js
@@ -58,65 +70,13 @@ A Chrome extension that adds one-click export functionality to Claude.ai convers
 - src/background/service-worker.js
 - public/styles/content.css
 
-### Config/Build (5)
+### Config/Build
 - package.json
 - build.js
 - public/manifest.json
 - public/icons/icon16.png
 - public/icons/icon48.png
 - public/icons/icon128.png
-
-### Documentation (4)
-- README.md
-- ARCHITECTURE.md
-- TESTING.md
-- .gitignore
-
-## Key Technical Achievements
-
-1. **API Integration**: Successfully integrated with Claude.ai's internal API using cookie-based auth
-2. **Tree Traversal**: Implemented correct message tree traversal to extract active conversation branch
-3. **PDF Generation**: Client-side PDF generation with proper pagination using jsPDF
-4. **SPA Detection**: Reliable navigation detection for single-page app routing
-5. **MV3 Compliance**: Full Manifest V3 compliance with proper permissions
-
-## Build Output
-
-```
-dist/
-├── content.js (1.35MB - bundled with jsPDF)
-├── service-worker.js (269 bytes)
-├── manifest.json
-├── icons/
-│   ├── icon16.png
-│   ├── icon48.png
-│   └── icon128.png
-└── styles/
-    └── content.css
-```
-
-## Next Steps for User
-
-1. Load extension:
-   ```bash
-   # Navigate to chrome://extensions/
-   # Enable Developer mode
-   # Click "Load unpacked"
-   # Select dist/ folder
-   ```
-
-2. Test on Claude.ai:
-   - Open any conversation
-   - Click Export button
-   - Choose format
-   - Verify download
-
-3. Optional enhancements:
-   - Add conversation metadata to exports (date, model used)
-   - Support exporting multiple conversations at once
-   - Add export history/favorites
-   - Custom PDF styling options
-   - Browser action popup with settings
 
 ## Dependencies
 
@@ -126,17 +86,10 @@ dist/
 ## Permissions Required
 
 - `webNavigation` - Detect SPA navigation
-- `cookies` - Read org ID from session
-- `https://claude.ai/*` - Access Claude API
+- `https://claude.ai/*`, `https://chatgpt.com/*`, `https://grok.com/*`
 
 ## Browser Support
 
-- ✅ Chrome
-- ✅ Chromium
-- ✅ Edge
-- ✅ Brave
-- ✅ Opera
+- Chrome, Chromium, Edge, Brave, Opera
 
 ## Status: Ready for Testing
-
-All planned features implemented. Extension is ready for loading and testing in Chrome.

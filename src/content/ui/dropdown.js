@@ -1,13 +1,10 @@
-import { getOrgId, fetchOrgId } from '../../core/auth.js';
-import { fetchConversation } from '../../core/api.js';
-import { getActiveThread } from '../../core/tree.js';
 import { formatAsMarkdown } from '../../exporters/markdown.js';
 import { formatAsPDF } from '../../exporters/pdf.js';
 import { downloadFile } from '../../utils/download.js';
 import { sanitizeFilename } from '../../utils/sanitize.js';
 import { showToast } from '../../utils/toast.js';
 
-export function showDropdown(button) {
+export function showDropdown(button, provider) {
   const existing = document.getElementById('snowden-dropdown');
   if (existing) {
     existing.remove();
@@ -17,6 +14,7 @@ export function showDropdown(button) {
   const dropdown = document.createElement('div');
   dropdown.id = 'snowden-dropdown';
   dropdown.className = 'snowden-dropdown';
+  dropdown.setAttribute('data-snowden-platform', provider.id);
   dropdown.innerHTML = `
     <button class="snowden-dropdown-item" data-format="markdown">
       Export as Markdown
@@ -29,7 +27,7 @@ export function showDropdown(button) {
   dropdown.querySelectorAll('.snowden-dropdown-item').forEach(item => {
     item.addEventListener('click', () => {
       const format = item.dataset.format;
-      handleExport(format);
+      handleExport(format, provider);
       dropdown.remove();
     });
   });
@@ -48,27 +46,15 @@ export function showDropdown(button) {
   dropdown.style.left = `${rect.left}px`;
 }
 
-async function handleExport(format) {
+async function handleExport(format, provider) {
   try {
-    const match = location.pathname.match(/\/chat\/([a-f0-9-]+)/);
-    if (!match) {
+    const conversationId = provider.getConversationId();
+    if (!conversationId) {
       showToast('Not on a chat page');
       return;
     }
 
-    const conversationId = match[1];
-    let orgId = getOrgId();
-
-    if (!orgId) {
-      orgId = await fetchOrgId();
-      if (!orgId) {
-        showToast('Could not determine organization ID');
-        return;
-      }
-    }
-
-    const conversation = await fetchConversation(orgId, conversationId);
-    const thread = getActiveThread(conversation);
+    const { conversation, thread } = await provider.fetchThread(conversationId);
 
     if (thread.length === 0) {
       showToast('No messages to export');
